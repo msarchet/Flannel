@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Flannel by msarchet</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Flannel</h1>
+        <p class="header">A logging module for Angular</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/msarchet/Flannel/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/msarchet/Flannel/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/msarchet/Flannel">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/msarchet">msarchet</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="flannel" class="anchor" href="#flannel"><span class="octicon octicon-link"></span></a>Flannel</h1>
+
+<p>Quick Start!</p>
+
+<p>Install with Bower</p>
+
+<pre><code>bower install flannel
+</code></pre>
+
+<p>Use</p>
+
+<p>Add flannel as a module, set up your loggers, set a logging level</p>
+
+<pre><code>(function () {
+    function homeController(logger) {
+        logger.log('thing', 123, {
+            123: 123
+        });
+        logger.warn('thing', 123, {
+            123: 123
+        });
+        logger.info('thing', 123, {
+            123: 123
+        });
+        logger.error('thing', 123, {
+            123: 123
+        });
+    }
+
+    var app = angular.module('app', ['flannel']);
+    app.run(['flannel.logger', function (logger) {
+        logger.setDefaultHandlers();
+        logger.setLogLevel(logger.logLevels.info);
+        logger.setLoggingHandler(logger.logLevels.info, function () {
+            console.log('Custom info handler!');
+        });
+
+    }]);
+    app.controller('home', ['flannel.logger', homeController]);
+
+})();
+</code></pre>
+
+<h1>
+<a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h1>
+
+<p>Flannel has 4 logging levels</p>
+
+<ul>
+<li> log</li>
+<li> info</li>
+<li> warn</li>
+<li> error</li>
+</ul><p>You can add a handler to a logging level for doing things like posting to an API by calling</p>
+
+<pre><code>logger.setLoggingHandler(logger.logLevel.&lt;level&gt;, yourHandler)
+</code></pre>
+
+<p>Calling <code>setDefaultHandlers()</code> will turn on the <code>console.&lt;level&gt;</code> loggers</p>
+
+<p>By default the logging level is <strong>error</strong></p>
+
+<p>You can change the logging level at runtime by calling</p>
+
+<pre><code>localStorage.setItem('flannel.loglevel', &lt;level&gt;)
+</code></pre>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-42119078-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
