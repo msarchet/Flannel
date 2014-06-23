@@ -39,3 +39,27 @@ Add flannel as a module, set up your loggers, set a logging level
         app.controller('home', ['flannel.logger', homeController]);
      
     })();
+
+About
+=====
+
+Flannel has 4 logging levels
+
+-  log
+-  info
+-  warn
+-  error
+
+You can add a handler to a logging level for doing things like posting to an API by calling
+
+    logger.setLoggingHandler(logger.logLevel.<level>, yourHandler)
+
+Calling `setDefaultHandlers()` will turn on the `console.<level>` loggers
+
+By default the logging level is **error**
+
+You can change the logging level at runtime by calling
+
+    localStorage.setItem('flannel.loglevel', <level>)
+
+
