@@ -44,35 +44,35 @@
 
 <p>Add flannel as a module, set up your loggers, set a logging level</p>
 
-<pre><code>(function () {
-    function homeController(logger) {
-        logger.log('thing', 123, {
-            123: 123
-        });
-        logger.warn('thing', 123, {
-            123: 123
-        });
-        logger.info('thing', 123, {
-            123: 123
-        });
-        logger.error('thing', 123, {
-            123: 123
-        });
-    }
+<div class="highlight highlight-javascript"><pre><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="kd">function</span> <span class="nx">homeController</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'thing'</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mi">123</span><span class="o">:</span> <span class="mi">123</span>
+        <span class="p">});</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">warn</span><span class="p">(</span><span class="s1">'thing'</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mi">123</span><span class="o">:</span> <span class="mi">123</span>
+        <span class="p">});</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">'thing'</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mi">123</span><span class="o">:</span> <span class="mi">123</span>
+        <span class="p">});</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'thing'</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mi">123</span><span class="o">:</span> <span class="mi">123</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
 
-    var app = angular.module('app', ['flannel']);
-    app.run(['flannel.logger', function (logger) {
-        logger.setDefaultHandlers();
-        logger.setLogLevel(logger.logLevels.info);
-        logger.setLoggingHandler(logger.logLevels.info, function () {
-            console.log('Custom info handler!');
-        });
+    <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'app'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'flannel'</span><span class="p">]);</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span><span class="s1">'flannel.logger'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">logger</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">setDefaultHandlers</span><span class="p">();</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">setLogLevel</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">logLevels</span><span class="p">.</span><span class="nx">info</span><span class="p">);</span>
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">setLoggingHandler</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">logLevels</span><span class="p">.</span><span class="nx">info</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Custom info handler!'</span><span class="p">);</span>
+        <span class="p">});</span>
 
-    }]);
-    app.controller('home', ['flannel.logger', homeController]);
+    <span class="p">}]);</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'home'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'flannel.logger'</span><span class="p">,</span> <span class="nx">homeController</span><span class="p">]);</span>
 
-})();
-</code></pre>
+<span class="p">})();</span>
+</pre></div>
 
 <h1>
 <a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h1>
@@ -86,8 +86,8 @@
 <li> error</li>
 </ul><p>You can add a handler to a logging level for doing things like posting to an API by calling</p>
 
-<pre><code>logger.setLoggingHandler(logger.logLevel.&lt;level&gt;, yourHandler)
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="nx">logger</span><span class="p">.</span><span class="nx">setLoggingHandler</span><span class="p">(</span><span class="nx">logger</span><span class="p">.</span><span class="nx">logLevel</span><span class="p">.</span><span class="o">&lt;</span><span class="nx">level</span><span class="o">&gt;</span><span class="p">,</span> <span class="nx">yourHandler</span><span class="p">)</span>
+</pre></div>
 
 <p>Calling <code>setDefaultHandlers()</code> will turn on the <code>console.&lt;level&gt;</code> loggers</p>
 
@@ -95,8 +95,8 @@
 
 <p>You can change the logging level at runtime by calling</p>
 
-<pre><code>localStorage.setItem('flannel.loglevel', &lt;level&gt;)
-</code></pre>
+<div class="highlight highlight-javascript"><pre><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">'flannel.loglevel'</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">level</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
       </section>
       <footer>
         <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
