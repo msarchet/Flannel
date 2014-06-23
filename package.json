@@ -1,0 +1,31 @@
+{
+  "name": "flannel",
+  "version": "0.1.0",
+  "description": "A logging module for Angular",
+  "main": "flannel.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/msarchet/Flannel.git"
+  },
+  "keywords": [
+    "logging",
+    "flannel",
+    "log",
+    "angular",
+    "module"
+  ],
+  "author": "Michael Sarchet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/msarchet/Flannel/issues"
+  },
+  "homepage": "https://github.com/msarchet/Flannel",
+  "devDependencies": {
+    "karma": "^0.12.16",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4"
+  }
+}
