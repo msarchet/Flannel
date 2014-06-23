@@ -13,9 +13,9 @@
                 }
             };
         }
-    
+
         this.setLogLevel = function (level) {
-            $window.localStorage.setItem('flannel.loglevel', JSON.stringify(level));    
+            this._logLevel = level;
         };
 
         this.logLevels = {
@@ -25,13 +25,16 @@
             error: 'error'
         };
         
+        this._logLevel = this.logLevels.error;    
+
         this.logLevel = function() { 
             var logLevel = $window.localStorage.getItem('flannel.loglevel');
+
             if(logLevel && self.logLevels[logLevel]) {
                 return self.logLevels[logLevel]    
             }
             
-            return self.logLevels.error;
+            return self._logLevel;
         };
         
         this.logTiers = {
