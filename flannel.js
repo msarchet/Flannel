@@ -72,7 +72,7 @@
 
 
 
-    var woodsman = angular.module('flannel', []);
+    var flannel = angular.module('flannel', []);
 
-    woodsman.factory('flannel.logger', ['$window', '$log', logger]);
+    flannel.factory('flannel.logger', ['$window', '$log', logger]);
 })();
