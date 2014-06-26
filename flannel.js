@@ -1,18 +1,23 @@
 (function () {
     function logger($window, $log) {
         var self = this;
-        function logWrapper(level) {
-            var handlers = self.logHandlers[level];
+
+        function logWrapper(logName, level) {
+            var handlers = self.logs[logName].logHandlers[level];
+            var name = logName;
 
             return function () {
                 var args = arguments;
-                if(self.logTiers[self.logLevel()].indexOf(level) !== -1) {
+                var _level = self.logLevel(name);
+                if(self.logTiers[_level].indexOf(level) !== -1) {
                     handlers.forEach(function (handler) {
                         handler.apply(this, args);
                     });
                 }
             };
         }
+
+        this._logLevel = 'error';
 
         this.setLogLevel = function (level) {
             this._logLevel = level;
@@ -25,16 +30,20 @@
             error: 'error'
         };
         
-        this._logLevel = this.logLevels.error;    
 
-        this.logLevel = function() { 
-            var logLevel = $window.localStorage.getItem('flannel.loglevel');
+        this.logLevel = function(logName) { 
 
-            if(logLevel && self.logLevels[logLevel]) {
-                return self.logLevels[logLevel]    
+            // get the log level for a specific log else get the log level for all logs
+            var logLevel = $window.localStorage.getItem('flannel.loglevel.' + logName)
+            if(logLevel == null || logLevel == "") {
+              logLevel = $window.localStorage.getItem('flannel.loglevel') 
+            } 
+
+            if(logLevel == null || logLevel == "") {
+              logLevel = self._logLevel;
             }
-            
-            return self._logLevel;
+
+            return logLevel;
         };
         
         this.logTiers = {
@@ -44,33 +53,44 @@
             error : ['error']
         };
 
-        this.logHandlers = {
+        this.createLog = function(logName) {
+          return {
             log: [],
             info: [],
             warn: [],
             error: []
+          }
         };
 
-        this.setDefaultHandlers = function() { 
-            this.logHandlers.log.push($log.log);
-            this.logHandlers.warn.push($log.warn);
-            this.logHandlers.info.push($log.info);
-            this.logHandlers.error.push($log.error);
+        this.logs = {
+          default : 
+            {
+              name : 'default',
+              logHandlers : self.createLog('default'),
+              setLoggingHandler : function(level, handler) {
+                this.logHandlers[level].push(handler)
+              }
+            } 
+        }; 
+
+        this.setDefaultHandlers = function(logNam) { 
+            this.logs[logName].logHandlers.log.push($log.log);
+            this.logs[logName].logHandlers.warn.push($log.warn);
+            this.logs[logName].logHandlers.info.push($log.info);
+            this.logs[logName].logHandlers.error.push($log.error);
         };
         
         this.setLoggingHandler = function (level, handler) {
-            self.logHandlers[level].push(handler);
+            self.logs['default'].logHandlers[level].push(handler);
         };
 
-        this.log = logWrapper(this.logLevels.log);
-        this.warn = logWrapper(this.logLevels.warn);
-        this.info = logWrapper(this.logLevels.info);
-        this.error = logWrapper(this.logLevels.error);
+        this.log    = logWrapper('default', this.logLevels.log);
+        this.warn   = logWrapper('default', this.logLevels.warn);
+        this.info   = logWrapper('default', this.logLevels.info);
+        this.error  = logWrapper('default', this.logLevels.error);
 
         return this;
     }
-
-
 
     var flannel = angular.module('flannel', []);
 
