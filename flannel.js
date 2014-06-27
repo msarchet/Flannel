@@ -2,7 +2,7 @@
     function logger($window, $log) {
         var self = this;
 
-        function logWrapper(logName, level) {
+        self.logWrapper = function(logName, level) {
             var handlers = self.logs[logName].logHandlers[level];
             var name = logName;
 
@@ -19,8 +19,12 @@
 
         this._logLevel = 'error';
 
-        this.setLogLevel = function (level) {
+        this.setGlobablLogLevel = function(level) {
             this._logLevel = level;
+        };
+
+        this.setLogLevel = function (level) {
+            this.default.logLevel = level;
         };
 
         this.logLevels = {
@@ -33,11 +37,16 @@
 
         this.logLevel = function(logName) { 
 
+            logName = logName || 'default';
             // get the log level for a specific log else get the log level for all logs
             var logLevel = $window.localStorage.getItem('flannel.loglevel.' + logName)
             if(logLevel == null || logLevel == "") {
               logLevel = $window.localStorage.getItem('flannel.loglevel') 
             } 
+
+            if(logLevel == null || logLevel == "") {
+              logLevel = self[logName].logLevel;
+            }
 
             if(logLevel == null || logLevel == "") {
               logLevel = self._logLevel;
@@ -47,13 +56,13 @@
         };
         
         this.logTiers = {
-            log :  ['log', 'info', 'warn', 'error'],
-            info : ['info', 'warn', 'error'],
-            warn : ['warn', 'error'],
+            log   : ['log', 'info', 'warn', 'error'],
+            info  : ['info', 'warn', 'error'],
+            warn  : ['warn', 'error'],
             error : ['error']
         };
 
-        this.createLog = function(logName) {
+        this.createLogHandlers = function() {
           return {
             log: [],
             info: [],
@@ -62,32 +71,52 @@
           }
         };
 
-        this.logs = {
-          default : 
-            {
-              name : 'default',
-              logHandlers : self.createLog('default'),
-              setLoggingHandler : function(level, handler) {
-                this.logHandlers[level].push(handler)
-              }
-            } 
-        }; 
+        this.setLoggingHandler = function (level, handler) {
+            self.logs['default'].logHandlers[level].push(handler);
+        };
 
-        this.setDefaultHandlers = function(logNam) { 
+        this.createLog = function(logName) {
+          if(self[logName]) {
+            throw new Error('Can not create log with that name');
+          }
+
+          self.logs[logName] = {
+              name : logName,
+              logLevel : self.logLevels.error,
+              logHandlers : self.createLogHandlers(),
+              setLoggingHandler : function(level, handler) {
+                this.logHandlers[level].push(handler);
+              },
+          };
+          
+          self.logs[logName].log    = self.logWrapper(logName, self.logLevels.log);
+          self.logs[logName].info   = self.logWrapper(logName, self.logLevels.info);
+          self.logs[logName].error  = self.logWrapper(logName, self.logLevels.error);
+          self.logs[logName].warn   = self.logWrapper(logName, self.logLevels.warn);
+          self.logs[logName].setLogLevel = function(level) {
+            self.logs[logName].logLevel = level;
+          };
+          self[logName] = self.logs[logName]
+          
+        };
+
+        this.logs = {};
+
+        this.createLog('default');
+
+        this.setDefaultHandlers = function(logName) { 
+            logName = logName || 'default';
             this.logs[logName].logHandlers.log.push($log.log);
             this.logs[logName].logHandlers.warn.push($log.warn);
             this.logs[logName].logHandlers.info.push($log.info);
             this.logs[logName].logHandlers.error.push($log.error);
         };
         
-        this.setLoggingHandler = function (level, handler) {
-            self.logs['default'].logHandlers[level].push(handler);
-        };
 
-        this.log    = logWrapper('default', this.logLevels.log);
-        this.warn   = logWrapper('default', this.logLevels.warn);
-        this.info   = logWrapper('default', this.logLevels.info);
-        this.error  = logWrapper('default', this.logLevels.error);
+        this.log    = self.logWrapper('default', this.logLevels.log);
+        this.warn   = self.logWrapper('default', this.logLevels.warn);
+        this.info   = self.logWrapper('default', this.logLevels.info);
+        this.error  = self.logWrapper('default', this.logLevels.error);
 
         return this;
     }
