@@ -74,6 +74,27 @@
 <span class="p">})();</span>
 </pre></div>
 
+<h2>
+<a name="named-logs" class="anchor" href="#named-logs"><span class="octicon octicon-link"></span></a>Named Logs</h2>
+
+<p>Flannel also supports the ability to name your logs for fine grained control over what logs your are turning on and off.</p>
+
+<p>First create a named log: </p>
+
+<div class="highlight highlight-javascript"><pre>
+<span class="nx">app</span><span class="p">.</span><span class="nx">run</span><span class="p">([</span><span class="s1">'flannel.logger'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">logger</span><span class="p">)</span>  <span class="p">{</span> 
+  <span class="nx">logger</span><span class="p">.</span><span class="nx">createLog</span><span class="p">(</span><span class="s1">'http'</span><span class="p">);</span>
+  <span class="nx">logger</span><span class="p">.</span><span class="nx">setDefaultHandlers</span><span class="p">(</span><span class="s1">'http'</span><span class="p">);</span>
+<span class="p">}]);</span>
+</pre></div>
+
+<p>You can now access this log directly off of logger</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">logger</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'thing'</span><span class="p">)</span>
+</pre></div>
+
+<p>All of the methods available on the unamed (global) log are available on the named logs.</p>
+
 <h1>
 <a name="about" class="anchor" href="#about"><span class="octicon octicon-link"></span></a>About</h1>
 
@@ -95,8 +116,21 @@
 
 <p>You can change the logging level at runtime by calling</p>
 
-<div class="highlight highlight-javascript"><pre><span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">'flannel.loglevel'</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">level</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight highlight-javascript"><pre><span class="c1">// set a global override</span>
+<span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">'flannel.loglevel'</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">level</span><span class="o">&gt;</span><span class="p">)</span>
+
+<span class="c1">// set a named log override</span>
+<span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">'flannel.loglevel.http'</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">level</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
+
+<p>Log levels are read in this order</p>
+
+<ol>
+<li>named log override - log level</li>
+<li>global override - log level</li>
+<li>named log - log level</li>
+<li>global log - log level</li>
+</ol>
       </section>
       <footer>
         <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
