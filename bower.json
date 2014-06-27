@@ -1,0 +1,27 @@
+{
+  "name": "flannel",
+  "version": "0.2.0",
+  "homepage": "github.com/msarchet/flannel",
+  "authors": [
+    "Michael Sarchet <mikesarchet@gmail.com>"
+  ],
+  "description": "A logging module for Angular",
+  "main": "flannel.js",
+  "keywords": [
+    "Logging",
+    "log",
+    "Log",
+    "Angular",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "karam.conf.js",
+    "package.json"
+  ]
+}
