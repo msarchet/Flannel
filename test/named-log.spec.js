@@ -79,5 +79,13 @@ describe('test named logs', function() {
     expect(logger.test.logLevel).toBe('info');
     expect(h.log).not.toHaveBeenCalled();
     expect(h.info).toHaveBeenCalledWith('thing');
+
+    logger.test.setLogLevel(null);
+    logger.test.log('thing');
+    logger.test.error('thing');
+    expect(logger.test.logLevel).toBe(null);
+    expect(logger.logLevel()).toBe('error');
+    expect(h.log).not.toHaveBeenCalled();
+    expect(h.error).toHaveBeenCalledWith('thing');
   }]));
 });

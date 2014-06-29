@@ -94,4 +94,5 @@ describe('test logging level switches', function() {
     expect(loggers.warn).toHaveBeenCalled();
     expect(loggers.error).toHaveBeenCalled();
   }]));
+
  });
