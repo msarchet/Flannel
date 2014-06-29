@@ -1,6 +1,6 @@
 {
   "name": "flannel",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "A logging module for Angular",
   "main": "flannel.js",
   "scripts": {
@@ -26,6 +26,18 @@
   "devDependencies": {
     "karma": "^0.12.16",
     "karma-jasmine": "^0.1.5",
-    "karma-phantomjs-launcher": "^0.1.4"
+    "karma-phantomjs-launcher": "^0.1.4",
+    "gulp": "^3.8.5",
+    "gulp-jshint": "^1.6.3",
+    "gulp-jsmin": "^0.1.4",
+    "gulp-rename": "^1.2.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "karma": "~0.12.16",
+    "karma-jasmine": "~0.1.5",
+    "karma-phantomjs-launcher": "~0.1.4"
   }
 }

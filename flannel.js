@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  function logger($window, $log) {
+  function Logger($window, $log) {
     // set the angular providers onto logger
     this.$window = $window;
     this.$log = $log;
@@ -19,13 +19,13 @@
   }
 
   // logs dict
-  logger.prototype.logs = {};
+  Logger.prototype.logs = {};
 
   // standard logging level
-  logger.prototype._logLevel = 'error';
+  Logger.prototype._logLevel = 'error';
 
   // a wrapper for passing through arguments
-  logger.prototype.logWrapper = function(logName, level) {
+  Logger.prototype.logWrapper = function(logName, level) {
     var self = this;
     var handlers = self.logs[logName].logHandlers[level];
 
@@ -45,12 +45,12 @@
   };
 
   // set a global logging level
-  logger.prototype.setGlobablLogLevel = function(level) {
+  Logger.prototype.setGlobablLogLevel = function(level) {
     this._logLevel = level;
   };
 
   // log levels
-  logger.prototype.logLevels = {
+  Logger.prototype.logLevels = {
     log: 'log',
     info: 'info',
     warn: 'warn',
@@ -58,51 +58,51 @@
   };
 
   // get the appropriate log level
-  logger.prototype.logLevel = function(logName) { 
+  Logger.prototype.logLevel = function(logName) { 
     var self = this;
     logName = logName || 'default';
     // get the log level for a specific log else get the log level for all logs
-    var logLevel = self.$window.localStorage.getItem('flannel.loglevel.' + logName)
-    if(logLevel == null || logLevel == "") {
-      logLevel = self.$window.localStorage.getItem('flannel.loglevel') 
+    var logLevel = self.$window.localStorage.getItem('flannel.loglevel.' + logName);
+    if(logLevel === null || logLevel === "") {
+      logLevel = self.$window.localStorage.getItem('flannel.loglevel');
     } 
 
-    if(logLevel == null || logLevel == "") {
+    if(logLevel === null || logLevel === "") {
       logLevel = self[logName].logLevel;
     }
 
-    if(logLevel == null || logLevel == "") {
+    if(logLevel === null || logLevel === "") {
       logLevel = self._logLevel;
     }
 
     return logLevel;
   };
   
-  logger.prototype.logTiers = {
+  Logger.prototype.logTiers = {
     log   : 3, 
     info  : 2, 
     warn  : 1,
     error : 0 
   };
 
-  logger.prototype.createLogHandlers = function() {
+  Logger.prototype.createLogHandlers = function() {
     return {
       log: [],
       info: [],
       warn: [],
       error: []
-    }
+    };
   };
 
-  logger.prototype.setLogLevel = function (level) {
+  Logger.prototype.setLogLevel = function (level) {
     this.default.logLevel = level;
   };
 
-  logger.prototype.setLoggingHandler = function(level, handler) {
+  Logger.prototype.setLoggingHandler = function(level, handler) {
     this.setHandler.call(this.default, level, handler);
   };
     
-  logger.prototype.createLog = function(logName) {
+  Logger.prototype.createLog = function(logName) {
     var self = this;
 
     if(self[logName]) {
@@ -127,16 +127,16 @@
     };
 
     // alias the log onto logger
-    self[logName] = self.logs[logName]
+    self[logName] = self.logs[logName];
   };
 
   // set a handler for a log level
-  logger.prototype.setHandler = function(level, handler) {
+  Logger.prototype.setHandler = function(level, handler) {
     this.logHandlers[level].push(handler);
   };
 
   // set/enable the console.log handlers
-  logger.prototype.setDefaultHandlers = function(logName) { 
+  Logger.prototype.setDefaultHandlers = function(logName) { 
     logName = logName || 'default';
     this.logs[logName].logHandlers.log.push(this.$log.log);
     this.logs[logName].logHandlers.warn.push(this.$log.warn);
@@ -146,6 +146,6 @@
 
   // put it on the module
   angular.module('flannel', [])
-    .service('flannel.logger', ['$window', '$log', logger]);
+    .service('flannel.logger', ['$window', '$log', Logger]);
 
 })();
