@@ -11,3 +11,8 @@ gulp.task('scripts', function() {
           .pipe(rename({suffix : '.min'}))
           .pipe(gulp.dest('./'));
 });
+
+gulp.task('watch', function() { 
+  gulp.watch('flannel.js', ['scripts']);
+});
+gulp.task('default', ['scripts']);

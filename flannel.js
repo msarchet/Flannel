@@ -144,8 +144,14 @@
     this.logs[logName].logHandlers.error.push(this.$log.error);
   };
 
-  // put it on the module
-  angular.module('flannel', [])
-    .service('flannel.logger', ['$window', '$log', Logger]);
-
+  if(angular !== undefined) {
+    angular.module('flannel', [])
+      .service('flannel.logger', ['$window', '$log', Logger]);
+  }
+  else {
+    window.Flannel = function() { 
+      return new Logger(window, console || { log : noOp, warn : noOp, info : noOp, error : noOp});
+    };
+  }
+  function noOp() { return; }
 })();
