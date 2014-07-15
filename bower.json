@@ -22,6 +22,8 @@
     "test",
     "tests",
     "karam.conf.js",
-    "package.json"
+    "package.json",
+    ".gitignore",
+    "gulpfile.js"
   ]
 }
